@@ -2,9 +2,9 @@ defmodule TodoApp.Todos.List do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias TodoApp.Account.User
-  alias TodoApp.Account.Task
-  alias TodoApp.Account.TaskList
+  alias TodoApp.Accounts.User
+  alias TodoApp.Todos.TaskList
+  alias TodoApp.Todos.Task
 
   schema "lists" do
     field :name, :string
@@ -12,6 +12,7 @@ defmodule TodoApp.Todos.List do
     belongs_to :user, User
 
     has_many :collaborators, User
+
     many_to_many :tasks, Task, join_through: TaskList
 
     timestamps()
@@ -20,11 +21,17 @@ defmodule TodoApp.Todos.List do
   @doc false
   def changeset(list, attrs) do
     list
-    |> cast(attrs, [:name, :tags])
+    |> cast(attrs, [:name, :tags, :user_id])
     |> validate_required([:name, :tags, :user_id])
     |> validate_length(:name, min: 5)
-    #|> cast_assoc(:tasks)
     |> foreign_key_constraint(:user_id)
-    |> cast_assoc(:tasks, with: &TaskList.changeset/2)
+    |> cast_assoc(:tasks)
+  end
+
+  @doc false
+  def changeset_with_tasks(list, attrs) do
+    list
+    |> changeset(attrs)
+    |> validate_length(:tasks, min: 1)
   end
 end

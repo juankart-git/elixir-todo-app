@@ -18,7 +18,8 @@ defmodule TodoAppWeb.TasksSocket do
   #
   # See the [`Channels guide`](https://hexdocs.pm/phoenix/channels.html)
   # for further details.
-  channel "task:lobby", TodoAppWeb.TaskChannel
+
+  channel "tasks:*", TodoAppWeb.TasksChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

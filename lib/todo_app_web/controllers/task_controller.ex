@@ -15,8 +15,6 @@ defmodule TodoAppWeb.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
-    user = conn.assigns.current_user
-    task_params = Map.merge(task_params, %{"user_id" => user.id})
     case Todos.create_task(task_params) do
       {:ok, task} ->
         conn

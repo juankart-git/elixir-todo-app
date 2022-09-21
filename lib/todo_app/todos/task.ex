@@ -2,7 +2,7 @@ defmodule TodoApp.Todos.Task do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query, only: [from: 2, where: 2]
-  alias TodoApp.Todos.User
+  alias TodoApp.Accounts.User
 
   @derive {Jason.Encoder, only: [:description, :id]}
   schema "tasks" do
@@ -19,7 +19,7 @@ defmodule TodoApp.Todos.Task do
     task
     |> cast(attrs, [:description, :done, :expiration, :user_id])
     |> validate_required([:description, :done, :user_id])
-    #|> validate_equal(:description, "Hola mundo")
+    # |> validate_equal(:description, "Hola mundo")
     |> validate_length(:description, min: 5)
     |> foreign_key_constraint(:user_id)
   end
@@ -34,16 +34,16 @@ defmodule TodoApp.Todos.Task do
   end
 
   def recent do
-    from t in __MODULE__, order_by: [asc: t.inserted_at], limit: 5
+    from t in __MODULE__,
+      order_by: [asc: t.inserted_at],
+      limit: 5
   end
 
-  defp validate_equal(changeset, field, value) do
-    validate_change changeset, field, fn(_field, change) ->
-      if change == value, do: [],
-      else: [{field, "must equal '#{value}'"}]
-    end
-  end
-
-
-
+  # defp validate_equal(changeset, field, value) do
+  #   validate_change(changeset, field, fn _field, change ->
+  #     if change == value,
+  #       do: [],
+  #       else: [{field, "must equal '#{value}'"}]
+  #   end)
+  # end
 end

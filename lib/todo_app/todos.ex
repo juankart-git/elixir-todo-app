@@ -131,7 +131,7 @@ defmodule TodoApp.Todos do
       ** (Ecto.NoResultsError)
 
   """
-  def get_list!(id), do: Repo.get!(List, id)
+  def get_list!(id), do: Repo.get!(List, id) |> Repo.preload(:tasks)
 
   @doc """
   Creates a list.
@@ -148,6 +148,15 @@ defmodule TodoApp.Todos do
   def create_list(attrs \\ %{}) do
     %List{}
     |> List.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a list with at least one task
+  """
+  def create_list_with_tasks(attrs \\ %{}) do
+    %List{}
+    |> List.changeset_with_tasks(attrs)
     |> Repo.insert()
   end
 

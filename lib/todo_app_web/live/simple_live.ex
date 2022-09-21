@@ -1,7 +1,7 @@
 defmodule TodoAppWeb.SimpleLive do
   use Phoenix.LiveView
 
-  def mount(_params, _uri, socket) do
+  def mount(_params, _session, socket) do
     socket = assign(socket, :message, "")
     {:ok, socket}
   end
